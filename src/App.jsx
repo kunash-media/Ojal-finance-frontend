@@ -1,14 +1,12 @@
 
-import './App.css'
+import FinanceAdminPanel from './components/FinanceAdminPanel';
 
 function App() {
-  
-
   return (
-   <div>
-    <h1>ojal finance</h1>
-   </div>
-  )
+    <div className="App">
+      <FinanceAdminPanel />
+    </div>
+  );
 }
 
-export default App
+export default App;
