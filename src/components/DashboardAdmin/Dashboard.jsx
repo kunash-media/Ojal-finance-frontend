@@ -1,14 +1,8 @@
-import { 
-  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import ChartCard from './ChartCard';
 import StatCards from './StatCards';
 import CustomersTable from './CustomersTable';
-import { 
-  lineChartData, barChartData, pieChartData, PIECHART_COLORS,
-  doughnutData, DOUGHNUT_COLORS
-} from '../../data/dummyData';
+import { lineChartData, barChartData, pieChartData, PIECHART_COLORS,doughnutData, DOUGHNUT_COLORS} from '../../data/dummyData';
 import { colors } from '../../utils/colors';
 
 function Dashboard() {

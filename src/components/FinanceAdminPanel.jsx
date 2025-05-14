@@ -5,6 +5,7 @@ import Dashboard from './DashboardAdmin/Dashboard';
 import PagePlaceholder from './PagePlaceholder';
 
 export default function FinanceAdminPanel() {
+  
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activePage, setActivePage] = useState('dashboard');
 

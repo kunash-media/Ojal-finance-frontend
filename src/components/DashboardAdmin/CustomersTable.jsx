@@ -1,4 +1,3 @@
-import React from 'react';
 import { customersData } from '../../data/dummyData';
 
 function CustomersTable() {

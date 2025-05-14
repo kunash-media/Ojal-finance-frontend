@@ -1,7 +1,7 @@
 import { Menu } from 'lucide-react';
 
 function Navbar({ toggleSidebar }) {
-  
+
   const navItems = [
     { name: 'Dashboard', id: 'dashboard' },
     { name: 'Savings', id: 'savings' },
@@ -9,6 +9,13 @@ function Navbar({ toggleSidebar }) {
     { name: 'FD', id: 'fd' },
     { name: 'Loan', id: 'loan' },
   ];
+
+  const getInitials = (name) => {
+    const parts = name.split(' ');
+    return parts.length >= 2 
+      ? `${parts[0][0]}${parts[parts.length-1][0]}`.toUpperCase()
+      : name.substring(0, 2).toUpperCase();
+  };
 
   return (
     <header className="z-10 py-4 bg-white shadow-sm">
@@ -42,12 +49,22 @@ function Navbar({ toggleSidebar }) {
           {/* Profile dropdown */}
           <div className="flex items-center">
             <div className="mr-2 flex flex-col items-end">
-              <span className="font-medium text-sm">John Doe</span>
-              <span className="text-xs text-gray-500">Admin</span>
+              <span className="font-medium text-sm">Amar Shinde</span>
+              <span className="text-xs text-gray-500">Admin Branch : Akurdi</span>
             </div>
-            <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-gray-300">
+            {/* <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-gray-300">
               <img src="/api/placeholder/40/40" alt="User profile" className="h-full w-full object-cover" />
-            </div>
+            </div> */}
+
+            <div className="h-10 w-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-300"
+              style={{ backgroundColor: '#55849E' }}
+              >
+              <span className="text-white font-medium text-sm">
+                {getInitials("Amar Shinde")}
+              </span>
+            </div> 
+
+
             {/* <button className="ml-1">
               <MoreHorizontal size={16} className="text-gray-600" />
             </button> */}

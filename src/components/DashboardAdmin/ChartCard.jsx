@@ -1,6 +1,6 @@
-import React from 'react';
 
 function ChartCard({ title, description, children }) {
+  
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="mb-4">
