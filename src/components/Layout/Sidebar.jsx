@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 
 function Sidebar({ isOpen, toggleSidebar, activePage, setActivePage }) {
-  // Navigation items for sidebar
+
   const mainNavItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, id: 'dashboard' },
     { name: 'Add Customer', icon: <Users size={20} />, id: 'addCustomer' },
@@ -25,9 +25,6 @@ function Sidebar({ isOpen, toggleSidebar, activePage, setActivePage }) {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between h-20 px-4 border-b border-gray-200">
         {isOpen && (
-        //   <div className="text-xl font-semibold text-gray-800">
-        //     Ojal micro Finance
-        //   </div>
          <div classNameclassName="flex items-center">
             <img 
                 src="/logo/logo-removebg-preview.png" 

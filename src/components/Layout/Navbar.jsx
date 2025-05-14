@@ -1,6 +1,7 @@
 import { Menu } from 'lucide-react';
 
 function Navbar({ toggleSidebar }) {
+  
   const navItems = [
     { name: 'Dashboard', id: 'dashboard' },
     { name: 'Savings', id: 'savings' },
