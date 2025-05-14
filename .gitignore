@@ -2,5 +2,7 @@
 .env
 .env*.local
 
-# Environment variables that might be created by your hosting provider
-.env.*"node_modules/" 
+
+# .gitignore
+node_modules/
+package-lock.json
