@@ -3,4 +3,4 @@
 .env*.local
 
 # Environment variables that might be created by your hosting provider
-.env.*
+.env.*"node_modules/" 
