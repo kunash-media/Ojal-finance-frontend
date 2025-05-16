@@ -1,5 +1,6 @@
 // tailwind.config.js
 module.exports = {
+  darkMode : 'class',
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
@@ -12,6 +13,10 @@ module.exports = {
         'white2': '#FFFFFF',
         'amaranth': '#CF3F55',
       },
+      dark: {
+          800: '#1e1e1e',
+          900: '#121212',
+        },
     },
   },
   plugins: [],

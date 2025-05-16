@@ -1,12 +1,17 @@
 import { Menu } from 'lucide-react';
+// import { IconButton, Switch } from '@mui/material';
+// import { Brightness4, Brightness7 } from '@mui/icons-material';
+// import { useDarkMode } from "../contextDarkMode/DarkModeContext";
 
 function Navbar({ toggleSidebar }) {
+
+    // const { darkMode, toggleDarkMode } = useDarkMode();
 
   const navItems = [
     { name: 'Dashboard', id: 'dashboard' },
     { name: 'Savings', id: 'savings' },
-    { name: 'RD', id: 'rd' },
-    { name: 'FD', id: 'fd' },
+    { name: 'Recurring Deposit', id: 'rd' },
+    { name: 'Fixed Deposit', id: 'fd' },
     { name: 'Loan', id: 'loan' },
   ];
 
@@ -18,7 +23,7 @@ function Navbar({ toggleSidebar }) {
   };
 
   return (
-    <header className="z-10 py-4 bg-white shadow-sm">
+    <header className="z-10 py-4 bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-900">
       <div className="flex items-center justify-between px-4">
         {/* Left section: Menu button & nav items */}
         <div className="flex items-center">
@@ -35,7 +40,7 @@ function Navbar({ toggleSidebar }) {
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className="text-gray-700 hover:text-blue-600 px-2 py-1"
+               className="text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 px-2 py-1"
               >
                 {item.name}
               </a>
@@ -45,19 +50,24 @@ function Navbar({ toggleSidebar }) {
 
         {/* Right section: Search, notifications, profile */}
         <div className="flex items-center space-x-4">
+
+           {/* Dark mode toggle */}
+          {/* <IconButton onClick={toggleDarkMode} color="inherit bg-white">
+            {darkMode ? <Brightness7 /> : <Brightness4 />}
+          </IconButton> */}
           
           {/* Profile dropdown */}
           <div className="flex items-center">
             <div className="mr-2 flex flex-col items-end">
-              <span className="font-medium text-sm">Amar Shinde</span>
+              <span className="font-medium text-sm dark:text-gray-200">Amar Shinde</span>
               <span className="text-xs text-gray-500">Admin Branch : Akurdi</span>
             </div>
             {/* <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-gray-300">
               <img src="/api/placeholder/40/40" alt="User profile" className="h-full w-full object-cover" />
             </div> */}
 
-            <div className="h-10 w-10 rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-300"
-              style={{ backgroundColor: '#55849E' }}
+            <div className="h-10 w-10 bg-teal-700 rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-300"
+              // style={{ backgroundColor: '#55849E' }}
               >
               <span className="text-white font-medium text-sm">
                 {getInitials("Amar Shinde")}

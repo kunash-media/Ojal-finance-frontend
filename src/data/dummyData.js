@@ -42,6 +42,7 @@ export const customersData = [
   { id: 3, name: 'Robert Brown', email: 'robert@example.com', accountType: 'RD', balance: 7500, status: 'Active' },
   { id: 4, name: 'Emily Wilson', email: 'emily@example.com', accountType: 'Loan', balance: -15000, status: 'Active' },
   { id: 5, name: 'Michael Clark', email: 'michael@example.com', accountType: 'Savings', balance: 3200, status: 'Inactive' },
+  { id: 6, name: 'Robert Brown', email: 'robert@example.com', accountType: 'RD', balance: 7500, status: 'Active' },
 ];
 
 export const statCardsData = [
