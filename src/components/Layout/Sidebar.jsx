@@ -4,10 +4,16 @@ import {
   LogOut
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 function Sidebar({ isOpen, toggleSidebar }) {
   // Get current location to highlight active route
   const location = useLocation();
+  
+  // State for logout confirmation modal
+  const [logoutConfirmation, setLogoutConfirmation] = useState({
+    isOpen: false
+  });
 
   const mainNavItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/' },
@@ -18,10 +24,19 @@ function Sidebar({ isOpen, toggleSidebar }) {
     { name: 'Apply for Loan', icon: <FileText size={20} />, path: '/apply-loan' },
     { name: 'Reports', icon: <BarChart size={20} />, path: '/reports' },
   ];
+  
+  // Handlers for logout confirmation
+  const handleLogoutClick = () => {
+    setLogoutConfirmation({ isOpen: true });
+  };
+  
+  const handleCancelLogout = () => {
+    setLogoutConfirmation({ isOpen: false });
+  };
 
   return (
     <aside 
-      className={`bg-white  shadow-lg transition-all duration-300 flex flex-col border-r border-gray-200 ${
+      className={`bg-white shadow-lg transition-all duration-300 flex flex-col border-r border-gray-200 ${
         isOpen ? 'w-64' : 'w-20'
       }`}
     >
@@ -67,6 +82,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
       {/* Sidebar Footer */}
       <div className="p-4 border-t border-gray-200">
         <button 
+          onClick={handleLogoutClick}
           className={`flex items-center p-2 rounded-lg hover:bg-gray-100 text-gray-700 w-full ${
             isOpen ? 'justify-start' : 'justify-center'
           }`}
@@ -75,6 +91,34 @@ function Sidebar({ isOpen, toggleSidebar }) {
           {isOpen && <span className="ml-3">Logout</span>}
         </button>
       </div>
+      
+      {/* logout Confirmation notify Modal */}
+      {logoutConfirmation.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center items-center overlay">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-96 slide-in">
+            <h2 className="text-xl font-bold mb-4 text-center">
+              Confirm LogOut
+            </h2>
+            <p className="text-gray-600 mb-6 text-center">
+              Are you sure you want to logout?
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={handleCancelLogout}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <Link to="/login">
+                <button
+                  className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 bounce-effect">
+                  Yes
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

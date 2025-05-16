@@ -1,4 +1,3 @@
-import React from 'react';
 import { Users, HandCoins, Building, FileText } from 'lucide-react';
 import { statCardsData } from '../../data/dummyData';
 

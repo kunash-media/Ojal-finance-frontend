@@ -43,8 +43,9 @@ function Navbar() {
         <div className="relative">
           <div className="flex items-center space-x-3">
             <div className="hidden md:block">
-              <div className="font-medium">Amar Shinde</div>
-              <div className="text-sm text-gray-500">Admin Branch : Akurdi</div>
+              <div className="font-medium">Name : Amar Shinde</div>
+              <div className="text-sm text-gray-500">Branch Name : <span className='text-gray-700 font-medium'>Akurdi</span></div>
+              <div className="text-sm text-gray-500">Role :  <span className='text-teal-700 font-bold'>Admin</span></div>
             </div>
          
             <div className="w-10 h-10 rounded-full bg-teal-700 flex items-center justify-center text-white">
