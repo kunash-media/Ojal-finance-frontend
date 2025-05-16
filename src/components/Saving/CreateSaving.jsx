@@ -200,13 +200,13 @@ function CreateSaving() {
             ) : (
               filteredUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="py-3 px-4 border-b">{user.id}</td>
-                  <td className="py-3 px-4 border-b">{user.name}</td>
-                  <td className="py-3 px-4 border-b">{user.mobile}</td>
-                  <td className="py-3 px-4 border-b">{user.address}</td>
-                  <td className="py-3 px-4 border-b">{user.email}</td>
-                  <td className="py-3 px-4 border-b">{user.date}</td>
-                  <td className="py-3 px-4 border-b text-center">
+                  <td className="py-3 px-3 border-b">{user.id}</td>
+                  <td className="py-3 px-3 border-b">{user.name}</td>
+                  <td className="py-3 px-3 border-b">{user.mobile}</td>
+                  <td className="py-3 px-3 border-b">{user.address}</td>
+                  <td className="py-3 px-3 border-b">{user.email}</td>
+                  <td className="py-3 px-3 border-b">{user.date}</td>
+                  <td className="py-3 px-3 border-b text-center">
                     <button
                       className="bg-teal-600 text-white px-3 py-1 rounded hover:bg-teal-700 transition-colors"
                       onClick={() => handleAddSaving(user.id)}

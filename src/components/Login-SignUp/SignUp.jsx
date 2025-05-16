@@ -12,6 +12,7 @@ function SignUp() {
     const [fullName, setFullName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [gender, setGender] = useState('');
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -34,6 +35,10 @@ function SignUp() {
             case 'email':
                 if (!value.includes('@')) error = 'Enter a valid email address.';
                 break;
+            case 'gender':
+                if (!value) error = 'Please select a gender.';
+                break;
+
             case 'phone':
                 if (!/^\d{10}$/.test(value)) error = 'Phone must be 10 digits.';
                 break;
@@ -92,6 +97,7 @@ function SignUp() {
         if (!fullName.trim()) newErrors.fullName = 'Full name is required.';
         if (!username.trim()) newErrors.username = 'Username is required.';
         if (!email.includes('@')) newErrors.email = 'Enter a valid email address.';
+        if (!gender) newErrors.gender = 'Please select a gender.';
         if (!/^\d{10}$/.test(phone)) newErrors.phone = 'Phone must be 10 digits.';
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
         if (!passwordRegex.test(password))
@@ -110,7 +116,7 @@ function SignUp() {
             const response = await fetch('https://your-backend-api.com/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fullName, username, email, phone, password, confirmPassword }),
+                body: JSON.stringify({ fullName, username, email, phone, gender, password, confirmPassword }),
             });
 
             const data = await response.json();
@@ -148,6 +154,7 @@ function SignUp() {
                             value={fullName}
                             onChange={handleFullNameChange}
                             required
+                            placeholder="Enter Your Name"
                         />
                         {errors.fullName && <p className="text-sm text-red-500 mt-1">{errors.fullName}</p>}
                     </div>
@@ -177,6 +184,30 @@ function SignUp() {
                         />
                         {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
                     </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold mb-1 text-gray-700">
+                            Gender <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                            value={gender}
+                            onChange={(e) => {
+                                setGender(e.target.value);
+                                validateField('gender', e.target.value);
+                            }}
+                            onBlur={(e) => validateField('gender', e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+                            required
+                        >
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        {errors.gender && <p className="text-sm text-red-500 mt-1">{errors.gender}</p>}
+                    </div>
+
 
                     <div>
                         <label className="block text-sm font-semibold mb-1 text-gray-700">
@@ -244,7 +275,7 @@ function SignUp() {
 
                         <div className="text-center text-md mt-4">
                             Already have an account?{' '}
-                            <button type="button" className="text-[#219C90] hover:underline" onClick={() => navigate('/')}>
+                            <button type="button" className="text-[#219C90] hover:underline" onClick={() => navigate('/login')}>
                                 Login
                             </button>
                         </div>
