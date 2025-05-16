@@ -21,7 +21,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
 
   return (
     <aside 
-      className={`bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 flex flex-col border-r border-gray-200 dark:border-gray-700 ${
+      className={`bg-white  shadow-lg transition-all duration-300 flex flex-col border-r border-gray-200 ${
         isOpen ? 'w-64' : 'w-20'
       }`}
     >
@@ -52,8 +52,8 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 to={item.path}
                 className={`flex items-center w-full p-2 rounded-lg ${
                   location.pathname === item.path
-                    ? 'bg-gray-100 dark:bg-gray-700 text-teal-600 dark:text-teal-600'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-gray-100 text-teal-600 '
+                    : 'hover:bg-gray-100 '
                 }`}
               >
                 <span className="text-gray-500">{item.icon}</span>

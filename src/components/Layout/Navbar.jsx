@@ -23,7 +23,7 @@ function Navbar({ toggleSidebar }) {
   };
 
   return (
-    <header className="z-10 py-4 bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-900">
+    <header className="z-10 py-4 bg-white shadow-sm">
       <div className="flex items-center justify-between px-4">
         {/* Left section: Menu button & nav items */}
         <div className="flex items-center">
@@ -40,7 +40,7 @@ function Navbar({ toggleSidebar }) {
               <a
                 key={item.id}
                 href={`#${item.id}`}
-               className="text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 px-2 py-1"
+               className="text-gray-700 hover:text-teal-600 px-2 py-1"
               >
                 {item.name}
               </a>
@@ -59,7 +59,7 @@ function Navbar({ toggleSidebar }) {
           {/* Profile dropdown */}
           <div className="flex items-center">
             <div className="mr-2 flex flex-col items-end">
-              <span className="font-medium text-sm dark:text-gray-200">Amar Shinde</span>
+              <span className="font-medium text-sm">Amar Shinde</span>
               <span className="text-xs text-gray-500">Admin Branch : Akurdi</span>
             </div>
             {/* <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-gray-300">
