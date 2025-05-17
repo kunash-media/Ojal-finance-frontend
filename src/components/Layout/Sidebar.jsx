@@ -67,7 +67,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 to={item.path}
                 className={`flex items-center w-full p-2 rounded-lg ${
                   location.pathname === item.path
-                    ? 'bg-gray-100 text-teal-600 '
+                    ? 'bg-gray-100 border border-teal-400 text-teal-600 '
                     : 'hover:bg-gray-100 '
                 }`}
               >

@@ -174,7 +174,7 @@ const AddCustomerForm = () => {
                         </label>
                         <label className="flex flex-col">
                             <span className="mb-2 font-semibold text-gray-700">
-                                Alternate Mobile Number <span className="text-red-600">*</span>
+                                Alternate Mobile Number 
                             </span>
                             <input
                                 type="tel"
@@ -183,11 +183,10 @@ const AddCustomerForm = () => {
                                 className={inputClasses}
                                 onChange={handleChange}
                                 value={formData.altMobile}
-                                required
                             />
                         </label>
                         <label className="flex flex-col">
-                            <span className="mb-2 font-semibold text-gray-700">Date of Birth</span>
+                            <span className="mb-2 font-semibold text-gray-700">Date of Birth<span className="text-red-600">*</span></span>
                             <input
                                 type="date"
                                 name="dob"

@@ -4,8 +4,8 @@ function CustomersTable() {
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="p-6 border-b border-gray-200 ">
-        <h2 className="text-lg font-semibold text-gray-800 ">Recent Customers</h2>
-        <p className="text-sm text-gray-500 ">List of recently added customers</p>
+        <h2 className="text-lg font-semibold text-gray-800 ">Recent Daily Collections</h2>
+        <p className="text-sm text-gray-500 ">List of recently collected customers</p>
       </div>
       <div className="overflow-x-auto overflow-y-auto h-[300px]">
         <table className="min-w-full divide-y divide-gray-300 ">

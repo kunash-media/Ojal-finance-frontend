@@ -5,7 +5,7 @@ function Navbar() {
   
   const navItems = [
     { name: 'Dashboard', id: 'dashboard', path: '/' },
-    { name: 'Savings', id: 'savings', path: '/create-saving' },
+    { name: 'Daily collection', id: 'savings', path: '/create-saving' },
     { name: 'Recurring Deposit', id: 'rd', path: '/create-rd' },
     { name: 'Fixed Deposit', id: 'fd', path: '/create-fd' },
     { name: 'Loan', id: 'loan', path: '/apply-loan' },

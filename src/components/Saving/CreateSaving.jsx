@@ -141,7 +141,11 @@ function CreateSaving() {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 bg-white rounded-lg  border border-gray-300 shadow-sm"
+         style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #E1F7F5 40%, #ffffff 100%)',
+          }}>
+            
       {/* App description section */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Create Saving Account</h1>
