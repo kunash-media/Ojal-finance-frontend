@@ -6,6 +6,7 @@ import PagePlaceholder from './components/PagePlaceholder';
 import AddCustomerForm from "./components/Add-customer/AddCustomerForm";
 import LoginForm from "./components/Login-SignUp/LoginPage";
 import SignUp from "./components/Login-SignUp/signup";
+import DailyCollection from "./components/Daily-collection/DailyCollection";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="create-fd" element={<PagePlaceholder title="Create FD Account" />} />
             <Route path="apply-loan" element={<PagePlaceholder title="Apply for Loan" />} />
             <Route path="reports" element={<PagePlaceholder title="Reports" />} />
+            <Route path = "daily-collection" element={<DailyCollection/>}/>
         </Route>
 
          <Route path = "/login" element={<LoginForm/>}/>

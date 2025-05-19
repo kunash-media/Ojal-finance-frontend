@@ -5,7 +5,7 @@ function Navbar() {
   
   const navItems = [
     { name: 'Dashboard', id: 'dashboard', path: '/' },
-    { name: 'Daily collection', id: 'savings', path: '/create-saving' },
+    { name: 'Daily collection', id: 'savings', path: '/daily-collection' },
     { name: 'Recurring Deposit', id: 'rd', path: '/create-rd' },
     { name: 'Fixed Deposit', id: 'fd', path: '/create-fd' },
     { name: 'Loan', id: 'loan', path: '/apply-loan' },
@@ -29,7 +29,7 @@ function Navbar() {
             <Link 
               key={item.id} 
               to={item.path}
-              className={`px-3 py-2 rounded hover:bg-gray-100 ${location.pathname === item.path ? 'text-teal-600 font-sm' : ''}`}
+              className={`px-3 py-2 rounded  hover:bg-gray-100  ${location.pathname === item.path ? 'text-teal-600 font-sm' : ''}`}
             >
               {item.name}
             </Link>
