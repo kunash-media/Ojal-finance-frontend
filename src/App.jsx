@@ -1,16 +1,19 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.jsx";
 import FinanceAdminLayout from "./components/FinanceAdminPanel";
 import Dashboard from './components/DashboardAdmin/Dashboard';
 import CreateSaving from './components/Saving/CreateSaving';
 import PagePlaceholder from './components/PagePlaceholder';
 import AddCustomerForm from "./components/Add-customer/AddCustomerForm";
 import LoginForm from "./components/Login-SignUp/LoginPage";
-import SignUp from "./components/Login-SignUp/signup";
+import SignUp from "./components/Login-SignUp/SignUp";
 import DailyCollection from "./components/Daily-collection/DailyCollection";
+import RecurringDeposit from "./components/Recurring-deposit/RecurringDeposit.jsx";
 
 function App() {
   return (
     <Router>
+      <AuthProvider>
       <Routes>
         <Route path="/" element={<FinanceAdminLayout />}>
 
@@ -18,7 +21,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="add-customer" element={<AddCustomerForm/>} />
             <Route path="create-saving" element={<CreateSaving />} />
-            <Route path="create-rd" element={<PagePlaceholder title="Create RD Account" />} />
+            <Route path="create-rd" element={<RecurringDeposit/>} />
             <Route path="create-fd" element={<PagePlaceholder title="Create FD Account" />} />
             <Route path="apply-loan" element={<PagePlaceholder title="Apply for Loan" />} />
             <Route path="reports" element={<PagePlaceholder title="Reports" />} />
@@ -28,7 +31,8 @@ function App() {
          <Route path = "/login" element={<LoginForm/>}/>
          <Route path = "/signup" element={<SignUp/>}/>
          
-      </Routes>      
+      </Routes> 
+      </AuthProvider>     
     </Router>
   );
 }

@@ -28,10 +28,10 @@ function CreateSaving() {
     // Simulated fetch - replace with actual API call
     setTimeout(() => {
       const mockUsers = [
-        { id: 'U55588', name: 'John Doe', mobile: '9876543210', address: '123 Main St, City', email: 'john@example.com', date: '2023-10-15' },
-        { id: 'U55589', name: 'Jane Smith', mobile: '8765432109', address: '456 Park Ave, Town', email: 'jane@example.com', date: '2023-11-20' },
-        { id: 'U55590', name: 'Michael Johnson', mobile: '7654321098', address: '789 Oak Rd, Village', email: 'michael@example.com', date: '2023-12-05' },
-        { id: 'U55591', name: 'Sarah Williams', mobile: '6543210987', address: '101 Pine St, County', email: 'sarah@example.com', date: '2024-01-10' },
+        { id: 'U55588', name: 'John Doe', mobile: '9876543210', address: '123 Main St, City', email: 'john@example.com',  branch:"Akurdi", date: '2023-10-15' },
+        { id: 'U55589', name: 'Jane Smith', mobile: '8765432109', address: '456 Park Ave, Town', email: 'jane@example.com',  branch:"Akurdi", date: '2023-11-20' },
+        { id: 'U55590', name: 'Michael Johnson', mobile: '7654321098', address: '789 Oak Rd, Village', email: 'michael@example.com', branch:"Akurdi", date: '2023-12-05' },
+        { id: 'U55591', name: 'Sarah Williams', mobile: '6543210987', address: '101 Pine St, County', email: 'sarah@example.com', branch:"Akurdi", date: '2024-01-10' },
       ];
       setUsers(mockUsers);
       setFilteredUsers(mockUsers);
@@ -181,15 +181,16 @@ function CreateSaving() {
       {/* Users table */}
       <div className="overflow-x-auto overflow-y-auto h-[300px]">
         <table className="min-w-full bg-white border border-gray-300 rounded-md">
-          <thead className='sticky top-0'>
+          <thead className='sticky top-0 z-50'>
             <tr className="bg-gray-100">
-              <th className="py-3 px-4 border-b text-left">Id</th>
-              <th className="py-3 px-4 border-b text-left">Name</th>
-              <th className="py-3 px-4 border-b text-left">Mobile</th>
-              <th className="py-3 px-4 border-b text-left">Address</th>
-              <th className="py-3 px-4 border-b text-left">Email</th>
-              <th className="py-3 px-4 border-b text-left">Date</th>
-              <th className="py-3 px-4 border-b text-center">Action</th>
+              <th className="py-3 px-10 border-b text-left">Id</th>
+              <th className="py-3 px-10 border-b text-left">Name</th>
+              <th className="py-3 px-10 border-b text-left">Mobile</th>
+              <th className="py-3 px-10 border-b text-left">Address</th>
+              <th className="py-3 px-10 border-b text-left">Email</th>
+              <th className="py-3 px-10 border-b text-left">Branch</th>
+              <th className="py-3 px-10 border-b text-left">Date</th>
+              <th className="py-3 px-10 border-b text-center bg-slate-100 sticky z-20 right-0">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -204,15 +205,16 @@ function CreateSaving() {
             ) : (
               filteredUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="py-3 px-3 border-b">{user.id}</td>
-                  <td className="py-3 px-3 border-b">{user.name}</td>
-                  <td className="py-3 px-3 border-b">{user.mobile}</td>
-                  <td className="py-3 px-3 border-b">{user.address}</td>
-                  <td className="py-3 px-3 border-b">{user.email}</td>
-                  <td className="py-3 px-3 border-b">{user.date}</td>
-                  <td className="py-3 px-3 border-b text-center">
+                  <td className="py-3 px-4 border-b">{user.id}</td>
+                  <td className="py-3 px-4 border-b">{user.name}</td>
+                  <td className="py-3 px-4 border-b">{user.mobile}</td>
+                  <td className="py-3 px-4 border-b">{user.address}</td>
+                  <td className="py-3 px-4 border-b">{user.email}</td>
+                  <td className="py-3 px-4 border-b">{user.branch}</td>
+                  <td className="py-3 px-4 border-b">{user.date}</td>
+                  <td className="py-2 px-4 border-b text-center bg-gray-50 sticky right-0 z-20">
                     <button
-                      className="bg-teal-600 text-white px-3 py-1 rounded hover:bg-teal-700 transition-colors"
+                      className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700 transition-colors"
                       onClick={() => handleAddSaving(user.id)}
                     >
                       Add Saving

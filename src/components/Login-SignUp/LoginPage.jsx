@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext.jsx';
 import { Button } from "./style/button";
 import { Input } from "./style/input";
 import { Card, CardContent } from "./style/card";
@@ -14,7 +15,9 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(''); // New error state
+  const [error, setError] = useState(''); 
+
+  const {login} = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,7 +25,7 @@ function LoginForm() {
     setError(''); // Clear previous errors
 
     try {
-      const response = await fetch('https://your-backend-api.com/login', {
+      const response = await fetch(`http://localhost:8080/api/admins/login?username=${username}&password=${password}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,8 +36,12 @@ function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
+
+        login(data); // Pass the user data to the context
+        
         toast.success('Successfully Logged In!');
-        setTimeout(() => navigate('/dashboard'), 1500);
+        setTimeout(() => navigate('/'), 1500);
+        console.log("backend response :",data);
       } else {
         setError(data.message || 'Invalid username or password'); // Set error inline
         toast.error(data.message || 'Invalid username or password');
@@ -42,6 +49,7 @@ function LoginForm() {
     } catch (err) {
       setError('Failed to connect to server');
       toast.error('Failed to connect to server');
+      console.log("submit error", err);
     } finally {
       setLoading(false);
     }
