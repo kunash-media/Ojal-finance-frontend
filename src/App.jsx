@@ -9,6 +9,7 @@ import LoginForm from "./components/Login-SignUp/LoginPage";
 import SignUp from "./components/Login-SignUp/SignUp";
 import DailyCollection from "./components/Daily-collection/DailyCollection";
 import RecurringDeposit from "./components/Recurring-deposit/RecurringDeposit.jsx";
+import FixedDeposit from "./components/Fixed-Deposit/FixedDeposit.jsx";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
             <Route path="add-customer" element={<AddCustomerForm/>} />
             <Route path="create-saving" element={<CreateSaving />} />
             <Route path="create-rd" element={<RecurringDeposit/>} />
-            <Route path="create-fd" element={<PagePlaceholder title="Create FD Account" />} />
+            <Route path="create-fd" element={<FixedDeposit />} />
             <Route path="apply-loan" element={<PagePlaceholder title="Apply for Loan" />} />
             <Route path="reports" element={<PagePlaceholder title="Reports" />} />
             <Route path = "daily-collection" element={<DailyCollection/>}/>
