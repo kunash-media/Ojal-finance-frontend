@@ -206,7 +206,7 @@ const AddCustomerForm = () => {
     };
 
     return (
-        <div className="flex justify-center mt-16 mb-16 px-4">
+        <div className="flex justify-center mb-16 px-4">
 
             {/* loading spinner */}
             {loading && (
