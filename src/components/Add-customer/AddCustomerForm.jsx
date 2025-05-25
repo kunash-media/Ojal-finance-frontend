@@ -1,6 +1,10 @@
+import './AddCustomerForm.css'; // Import custom CSS for additional responsive styles
 import { useState } from 'react';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const AddCustomerForm = () => {
+
+    // State for form data - keeping original structure
     const [formData, setFormData] = useState({
         firstName: '',
         middleName: '',
@@ -14,23 +18,50 @@ const AddCustomerForm = () => {
         pincode: '',
         branch: '',
         documents: {
-            aadhaar: null,
-            pan: null,
-            voterId: null,
-            photo: null,
+            aadharCard: null,    // Match backend field name (was aadhaar)
+            panCard: null,       // Match backend field name (was pan)
+            voterIdImg: null,    // Match backend field name (was voterId)
+            passPortImg: null,   // Match backend field name (was photo)
         },
     });
 
-    // Input styles with rounded corners and subtle shadow on focus
+    // Loading state for form submission
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Toast notifications state
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastType, setToastType] = useState(''); // 'success' or 'error'
+    const [showToast, setShowToast] = useState(false);
+    const [loading, setLoading] = useState(false); // State to control loading spinner
+
+    // Input styles with rounded corners and subtle shadow on focus - KEEPING ORIGINAL
     const inputClasses =
         "border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition";
 
+    /**
+     * Show toast notification
+     * @param {string} message - Toast message
+     * @param {string} type - Toast type ('success' or 'error')
+     */
+    const showToastNotification = (message, type) => {
+        setToastMessage(message);
+        setToastType(type);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 5000);
+    };
+
+    /**
+     * Handle input changes for both text fields and file uploads
+     * @param {Event} e - Input change event
+     */
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        if (['aadhaar', 'pan', 'voterId', 'photo'].includes(name)) {
+
+        // Handle document file uploads - updated field names to match backend
+        if (['aadharCard', 'panCard', 'voterIdImg', 'passPortImg'].includes(name)) {
             const file = files[0];
             if (file && !file.type.startsWith('image/')) {
-                alert('Only image files are allowed for documents.');
+                showToastNotification('Only image files are allowed for documents.', 'error');
                 e.target.value = null;
                 return;
             }
@@ -42,6 +73,7 @@ const AddCustomerForm = () => {
                 },
             }));
         } else {
+            // Handle regular text inputs
             setFormData((prev) => ({
                 ...prev,
                 [name]: value,
@@ -49,10 +81,89 @@ const AddCustomerForm = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    /**
+     * Handle form submission with API integration
+     * @param {Event} e - Form submit event
+     */
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form Data:', formData);
-        alert('Form submitted! Check console for data.');
+        setIsSubmitting(true);
+
+        setLoading(true);  // Show the spinner
+
+        try {
+            // Create FormData object for multipart/form-data request
+            const formDataToSend = new FormData();
+
+            // Prepare userData object for backend - exactly matching your payload structure
+            const userData = {
+                firstName: formData.firstName,
+                middleName: formData.middleName || 'NA', // Default to 'NA' if empty
+                lastName: formData.lastName,
+                email: formData.email,
+                mobile: formData.mobile,
+                altMobile: formData.altMobile || 'NA',
+                gender: formData.gender,
+                dob: formData.dob,
+                address: formData.address,
+                pincode: formData.pincode,
+                branch: formData.branch,
+            };
+
+            // Add userData as a Blob with proper type
+            const userDataBlob = new Blob([JSON.stringify(userData)], { type: 'application/json' });
+            formDataToSend.append('userData', userDataBlob);
+
+            // Add document files to FormData - matching exact backend parameter names
+            if (formData.documents.panCard) {
+                formDataToSend.append('panCard', formData.documents.panCard);
+            }
+            if (formData.documents.aadharCard) {
+                formDataToSend.append('aadharCard', formData.documents.aadharCard);
+            }
+            if (formData.documents.passPortImg) {
+                formDataToSend.append('passPortImg', formData.documents.passPortImg);
+            }
+            if (formData.documents.voterIdImg) {
+                formDataToSend.append('voterIdImg', formData.documents.voterIdImg);
+            }
+
+            // Make API call to backend
+            const response = await fetch('http://localhost:8080/api/users/register', {
+                method: 'POST',
+                body: formDataToSend,
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Registration successful:', result);
+
+                // Show success toast notification
+                showToastNotification('Customer registered successfully!', 'success');
+
+                // Reset form after successful submission
+                resetForm();
+            } else {
+                const errorData = await response.json();
+                console.error('Registration failed:', errorData);
+                showToastNotification(errorData.message || 'Registration failed. Please try again.', 'error');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            showToastNotification('Network error. Please check your connection and try again.', 'error');
+        } finally {
+            setLoading(false); // Hide the spinner
+            setIsSubmitting(false);
+        }
+    };
+
+    /**
+     * Reset form to initial state
+     */
+    const resetForm = () => {
         setFormData({
             firstName: '',
             middleName: '',
@@ -62,17 +173,28 @@ const AddCustomerForm = () => {
             altMobile: '',
             dob: '',
             address: '',
+            gender: '',
             pincode: '',
             branch: '',
             documents: {
-                aadhaar: null,
-                pan: null,
-                voterId: null,
-                photo: null,
+                aadharCard: null,
+                panCard: null,
+                voterIdImg: null,
+                passPortImg: null,
             },
+        });
+
+        // Reset file inputs manually
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            input.value = '';
         });
     };
 
+    /**
+     * Remove uploaded document
+     * @param {string} docKey - Document key to remove
+     */
     const removeDocument = (docKey) => {
         setFormData((prev) => ({
             ...prev,
@@ -84,22 +206,54 @@ const AddCustomerForm = () => {
     };
 
     return (
-        <div className="flex justify-center mt-16 mb-16 px-4ex px-4">
-            {/* Card container with rounded corners and shadow */}
-            <div className=" rounded-3xl border border-gray-300 shadow-sm max-w-5xl w-full p-8 sm:p-10"
+        <div className="flex justify-center mt-16 mb-16 px-4">
+
+            {/* loading spinner */}
+            {loading && (
+                <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+                    <ClipLoader color="#00796B" loading={loading} size={100} />
+                </div>
+            )}
+            {/* Custom Toast Notification */}
+            {showToast && (
+                <div className={`fixed top-4 right-4 z-50 custom-toast ${toastType === 'success' ? 'toast-success' : 'toast-error'}`}>
+                    <div className="flex items-center bg-white rounded-lg shadow-lg border px-4 py-3 min-w-80">
+                        <span className={`text-xl mr-3 ${toastType === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                            {toastType === 'success' ? '✓' : '✕'}
+                        </span>
+                        <span className="text-gray-800 flex-1">{toastMessage}</span>
+                        <button
+                            className="ml-3 text-gray-400 hover:text-gray-600 text-xl font-bold"
+                            onClick={() => setShowToast(false)}
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Card container with rounded corners and shadow - KEEPING ORIGINAL TAILWIND */}
+            <div className="rounded-3xl border border-gray-300 shadow-sm max-w-5xl w-full p-8 sm:p-10"
                 style={{
                     background: 'linear-gradient(135deg, #ffffff 0%, #E1F7F5 40%, #ffffff 100%)',
                 }}>
                 <form onSubmit={handleSubmit} className="space-y-8">
-                    <h2 className="text-3xl font-bold mb-6 text-center text-gray-800"
-                        style={{
-                            fontFamily: "'Nunito', sans-serif",
-                            color: '#135D66'
-                        }}>
-                        Add Customer
-                    </h2>
+                    {/* Form Header with Description */}
+                    <div className="text-center mb-6">
+                        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800"
+                            style={{
+                                fontFamily: "'Nunito', sans-serif",
+                                color: '#135D66'
+                            }}>
+                            Add Customer
+                        </h2>
+                        <p className="text-gray-600 text-sm sm:text-base mb-4">
+                            Register a new customer by filling out all required information below.
+                            All fields marked with <span className="text-red-600 font-semibold">*</span> are mandatory.
+                        </p>
+                    </div>
 
-                    {/* Name Fields */}
+                    {/* Name Fields - KEEPING ORIGINAL TAILWIND GRID */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         <label className="flex flex-col">
                             <span className="mb-2 font-semibold text-gray-700">
@@ -109,10 +263,11 @@ const AddCustomerForm = () => {
                                 type="text"
                                 name="firstName"
                                 placeholder="First Name"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.firstName}
                                 required
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
@@ -121,9 +276,10 @@ const AddCustomerForm = () => {
                                 type="text"
                                 name="middleName"
                                 placeholder="Middle Name"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.middleName}
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
@@ -134,15 +290,16 @@ const AddCustomerForm = () => {
                                 type="text"
                                 name="lastName"
                                 placeholder="Last Name"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.lastName}
                                 required
+                                disabled={isSubmitting}
                             />
                         </label>
                     </div>
 
-                    {/* Other Fields */}
+                    {/* Other Fields - KEEPING ORIGINAL TAILWIND GRID */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <label className="flex flex-col">
                             <span className="mb-2 font-semibold text-gray-700">
@@ -152,10 +309,11 @@ const AddCustomerForm = () => {
                                 type="email"
                                 name="email"
                                 placeholder="Email"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.email}
                                 required
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
@@ -166,23 +324,25 @@ const AddCustomerForm = () => {
                                 type="tel"
                                 name="mobile"
                                 placeholder="Mobile Number"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.mobile}
                                 required
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
                             <span className="mb-2 font-semibold text-gray-700">
-                                Alternate Mobile Number 
+                                Alternate Mobile Number
                             </span>
                             <input
                                 type="tel"
                                 name="altMobile"
                                 placeholder="Alternate Mobile Number"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.altMobile}
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
@@ -190,10 +350,11 @@ const AddCustomerForm = () => {
                             <input
                                 type="date"
                                 name="dob"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.dob}
                                 required
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
@@ -204,9 +365,9 @@ const AddCustomerForm = () => {
                                 name="gender"
                                 value={formData.gender}
                                 onChange={handleChange}
-                                className={`border border-gray-300 rounded-lg p-3 w-full shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 ${formData.gender === '' ? 'text-gray-400' : 'text-gray-700'
-                                    }`}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 required
+                                disabled={isSubmitting}
                             >
                                 <option value="" disabled hidden>
                                     Select Gender
@@ -215,10 +376,7 @@ const AddCustomerForm = () => {
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
                             </select>
-
                         </label>
-
-
                         <label className="flex flex-col">
                             <span className="mb-2 font-semibold text-gray-700">
                                 Pincode <span className="text-red-600">*</span>
@@ -227,10 +385,12 @@ const AddCustomerForm = () => {
                                 type="text"
                                 name="pincode"
                                 placeholder="Pincode"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
+
                                 onChange={handleChange}
                                 value={formData.pincode}
                                 required
+                                disabled={isSubmitting}
                             />
                         </label>
                         <label className="flex flex-col">
@@ -241,41 +401,42 @@ const AddCustomerForm = () => {
                                 type="text"
                                 name="branch"
                                 placeholder="Branch Name"
-                                className={inputClasses}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
                                 value={formData.branch}
                                 required
+                                disabled={isSubmitting}
+                            />
+                        </label>
+                        {/* Address - KEEPING ORIGINAL TAILWIND */}
+                        <label className="flex flex-col">
+                            <span className="mb-2 font-semibold text-gray-700">
+                                Address <span className="text-red-600">*</span>
+                            </span>
+                            <textarea
+                                name="address"
+                                placeholder="Address"
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
+                                rows="1"
+                                onChange={handleChange}
+                                value={formData.address}
+                                required
+                                disabled={isSubmitting}
                             />
                         </label>
                     </div>
 
-                    {/* Address */}
-                    <label className="flex flex-col">
-                        <span className="mb-2 font-semibold text-gray-700">
-                            Address <span className="text-red-600">*</span>
-                        </span>
-                        <textarea
-                            name="address"
-                            placeholder="Address"
-                            className={`${inputClasses} resize-none`}
-                            rows="4"
-                            onChange={handleChange}
-                            value={formData.address}
-                            required
-                        />
-                    </label>
-
-                    {/* Document Upload */}
+                    {/* Document Upload - KEEPING ORIGINAL TAILWIND WITH UPDATED FIELD NAMES */}
                     <div className="space-y-6">
                         <h3 className="text-xl font-semibold text-gray-800 mb-4">
                             Upload Documents <span className="text-red-600">*</span>
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {[
-                                { key: 'aadhaar', label: 'Aadhaar Card' },
-                                { key: 'pan', label: 'PAN Card' },
-                                { key: 'voterId', label: 'Voter ID' },
-                                { key: 'photo', label: 'Passport Size Photo' }
+                                { key: 'aadharCard', label: 'Aadhaar Card' },
+                                { key: 'panCard', label: 'PAN Card' },
+                                { key: 'voterIdImg', label: 'Voter ID' },
+                                { key: 'passPortImg', label: 'Passport Size Photo' }
                             ].map(({ key, label }) => (
                                 <label key={key} className="flex flex-col">
                                     <span className="mb-2 font-semibold text-gray-700">
@@ -288,8 +449,9 @@ const AddCustomerForm = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => removeDocument(key)}
-                                                className="ml-4 text-red-600 font-bold hover:text-red-800"
+                                                className="ml-4 text-red-600 font-bold hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed"
                                                 aria-label={`Remove ${label}`}
+                                                disabled={isSubmitting}
                                             >
                                                 &times;
                                             </button>
@@ -299,9 +461,10 @@ const AddCustomerForm = () => {
                                             type="file"
                                             name={key}
                                             accept="image/*"
-                                            className={`${inputClasses} mt-1 cursor-pointer`}
+                                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                             onChange={handleChange}
                                             required
+                                            disabled={isSubmitting}
                                         />
                                     )}
                                 </label>
@@ -309,12 +472,20 @@ const AddCustomerForm = () => {
                         </div>
                     </div>
 
-                    {/* Submit Button with rounded corners and shadow */}
+                    {/* Submit Button - KEEPING ORIGINAL TAILWIND WITH LOADER */}
                     <button
                         type="submit"
-                        className="bg-[#129990] hover:bg-[#096B68] text-white font-semibold py-3 px-8 rounded-lg w-full shadow-md transition duration-300"
+                        className="bg-[#129990] hover:bg-[#096B68] text-white font-semibold py-3 px-8 rounded-lg w-full shadow-md transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+                        disabled={isSubmitting}
                     >
-                        Submit
+                        {isSubmitting ? (
+                            <>
+                                <div className="loading-spinner-teal mr-2"></div>
+                                Submitting...
+                            </>
+                        ) : (
+                            'Submit'
+                        )}
                     </button>
                 </form>
             </div>

@@ -31,7 +31,7 @@ function SignUp() {
             ...prev,
             [name]: value
         }));
-        
+
         // Validate the field if it's not branchName
         if (name !== 'branchName') {
             validateField(name, value);
@@ -80,21 +80,21 @@ function SignUp() {
     // Final validation on submit
     const validateForm = () => {
         const newErrors = {};
-        
+
         if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required.';
         if (!formData.username.trim()) newErrors.username = 'Username is required.';
         if (!formData.email.includes('@')) newErrors.email = 'Enter a valid email address.';
         if (!formData.gender) newErrors.gender = 'Please select a gender.';
         if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Phone must be 10 digits.';
         if (formData.altPhone && !/^\d{10}$/.test(formData.altPhone)) newErrors.altPhone = 'Alt phone must be 10 digits.';
-        
+
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
         if (!passwordRegex.test(formData.password)) {
             newErrors.password = 'Password must be at least 8 characters, include a number, a letter, and a special character.';
         }
-        
+
         if (formData.confirmPassword !== formData.password) newErrors.confirmPassword = 'Passwords do not match.';
-        
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -139,7 +139,7 @@ function SignUp() {
 
     return (
         <div className="min-h-screen flex items-center justify-center px-4"
-            style={{ background: 'linear-gradient(to bottom, rgba(80, 180, 152, 0.1), rgba(80, 180, 152, 0.4))' }}>
+            style={{ background: 'linear-gradient(to bottom, rgba(5, 102, 94, 0.8), rgba(4, 78, 71, 0.95))' }}>
             <Toaster position="top-right" richColors />
 
             <div className="w-full max-w-3xl bg-white shadow-3xl border border-gray-200 rounded-2xl p-10">
@@ -157,6 +157,7 @@ function SignUp() {
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
                             placeholder="Enter Your Name"
                         />
@@ -172,6 +173,7 @@ function SignUp() {
                             name="username"
                             value={formData.username}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
                         />
                         {errors.username && <p className="text-sm text-red-500 mt-1">{errors.username}</p>}
@@ -186,6 +188,7 @@ function SignUp() {
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
                         />
                         {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
@@ -200,7 +203,7 @@ function SignUp() {
                             value={formData.gender}
                             onChange={handleInputChange}
                             onBlur={(e) => validateField('gender', e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+                            className="w-full p-2 border rounded-xl focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
                         >
                             <option value="">Select Gender</option>
@@ -220,6 +223,7 @@ function SignUp() {
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
                         />
                         {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone}</p>}
@@ -234,6 +238,7 @@ function SignUp() {
                             name="altPhone"
                             value={formData.altPhone}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             placeholder="Optional"
                         />
                         {errors.altPhone && <p className="text-sm text-red-500 mt-1">{errors.altPhone}</p>}
@@ -241,13 +246,15 @@ function SignUp() {
 
                     <div>
                         <label className="block text-sm font-semibold mb-1 text-gray-700">
-                            Branch Name
+                            Branch Name <span className="text-red-500">*</span>
                         </label>
                         <Input
                             type="text"
                             name="branchName"
                             value={formData.branchName}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
+                            required
                         />
                     </div>
 
@@ -260,8 +267,8 @@ function SignUp() {
                             name="password"
                             value={formData.password}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
-                            className="pr-10"
                         />
                         <span
                             className="absolute right-3 top-10 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-[#219C90]"
@@ -281,8 +288,8 @@ function SignUp() {
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleInputChange}
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
-                            className="pr-10"
                         />
                         <span
                             className="absolute right-3 top-10 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-[#219C90]"

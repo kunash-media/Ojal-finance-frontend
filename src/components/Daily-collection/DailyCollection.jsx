@@ -108,8 +108,10 @@ const DailyCollection = () => {
   const [openPayForm, setOpenPayForm] = useState(false);
   const [openHistoryModal, setOpenHistoryModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [historyFilterDate, setHistoryFilterDate] = useState(null);
+  // const [historyFilterDate, setHistoryFilterDate] = useState(null);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+
+
   
   // Form data state
   const [paymentData, setPaymentData] = useState({
@@ -125,29 +127,84 @@ const DailyCollection = () => {
     // This would be replaced with actual API call
     fetchAccounts();
   }, []);
+
+
+// 1. ADD THESE STATE VARIABLES (add near your existing useState declarations)
+const [historyFilterFromDate, setHistoryFilterFromDate] = useState(null);
+const [historyFilterToDate, setHistoryFilterToDate] = useState(null);
+const [historyFilterPayMode, setHistoryFilterPayMode] = useState('');
+
+// 2. REPLACE YOUR OLD useEffect WITH THIS ONE
+useEffect(() => {
+  if (selectedAccount && selectedAccount.transactions) {
+    let filtered = [...selectedAccount.transactions];
+    
+    // Filter by date range
+    if (historyFilterFromDate || historyFilterToDate) {
+      filtered = filtered.filter(transaction => {
+        const transactionDate = new Date(transaction.timestamp);
+        const fromDate = historyFilterFromDate ? new Date(historyFilterFromDate) : null;
+        const toDate = historyFilterToDate ? new Date(historyFilterToDate) : null;
+        
+        if (fromDate) fromDate.setHours(0, 0, 0, 0);
+        if (toDate) toDate.setHours(23, 59, 59, 999);
+        
+        const afterFromDate = !fromDate || transactionDate >= fromDate;
+        const beforeToDate = !toDate || transactionDate <= toDate;
+        
+        return afterFromDate && beforeToDate;
+      });
+    }
+    
+    // Filter by payment mode
+    if (historyFilterPayMode) {
+      filtered = filtered.filter(transaction => 
+        transaction.payMode.toLowerCase() === historyFilterPayMode.toLowerCase()
+      );
+    }
+    
+    // Sort by most recent first
+    filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    setFilteredTransactions(filtered);
+  }
+}, [historyFilterFromDate, historyFilterToDate, historyFilterPayMode, selectedAccount]);
+
+
+  // Reset filters when modal is closed
+  useEffect(() => {
+    if (!openHistoryModal) {
+      setHistoryFilterFromDate(null);
+      setHistoryFilterToDate(null);
+      setHistoryFilterPayMode('');
+    }
+  }, [openHistoryModal]);
+
+
+
   
   // Filter transactions when date filter changes
-  useEffect(() => {
-    if (selectedAccount && selectedAccount.transactions) {
-      if (historyFilterDate) {
-        const filterDate = new Date(historyFilterDate);
-        const filtered = selectedAccount.transactions.filter(transaction => {
-          const transactionDate = new Date(transaction.timestamp);
-          return (
-            transactionDate.getDate() === filterDate.getDate() &&
-            transactionDate.getMonth() === filterDate.getMonth() &&
-            transactionDate.getFullYear() === filterDate.getFullYear()
-          );
-        });
-        setFilteredTransactions(filtered);
-      } else {
-        // When no filter is applied, show all transactions sorted by most recent
-        setFilteredTransactions([...selectedAccount.transactions].sort((a, b) => 
-          new Date(b.timestamp) - new Date(a.timestamp)
-        ));
-      }
-    }
-  }, [historyFilterDate, selectedAccount]);
+  // useEffect(() => {
+  //   if (selectedAccount && selectedAccount.transactions) {
+  //     if (historyFilterDate) {
+  //       const filterDate = new Date(historyFilterDate);
+  //       const filtered = selectedAccount.transactions.filter(transaction => {
+  //         const transactionDate = new Date(transaction.timestamp);
+  //         return (
+  //           transactionDate.getDate() === filterDate.getDate() &&
+  //           transactionDate.getMonth() === filterDate.getMonth() &&
+  //           transactionDate.getFullYear() === filterDate.getFullYear()
+  //         );
+  //       });
+  //       setFilteredTransactions(filtered);
+  //     } else {
+  //       // When no filter is applied, show all transactions sorted by most recent
+  //       setFilteredTransactions([...selectedAccount.transactions].sort((a, b) => 
+  //         new Date(b.timestamp) - new Date(a.timestamp)
+  //       ));
+  //     }
+  //   }
+  // }, [historyFilterDate, selectedAccount]);
   
   // Mock API call function (to be replaced with actual API)
   const fetchAccounts = () => {
@@ -170,16 +227,22 @@ const DailyCollection = () => {
     setOpenPayForm(true);
   };
   
-  // Handle history button click
-  const handleHistoryClick = (account) => {
-    setSelectedAccount(account);
-    setHistoryFilterDate(null);
-    // Initial load of all transactions sorted by most recent
-    setFilteredTransactions([...account.transactions].sort((a, b) => 
-      new Date(b.timestamp) - new Date(a.timestamp)
-    ));
-    setOpenHistoryModal(true);
-  };
+  // Updated Handle history button click function
+const handleHistoryClick = (account) => {
+  setSelectedAccount(account);
+  
+  // Reset all filter states to null/empty
+  setHistoryFilterFromDate(null);
+  setHistoryFilterToDate(null);
+  setHistoryFilterPayMode('');
+  
+  // Initial load of all transactions sorted by most recent
+  setFilteredTransactions([...account.transactions].sort((a, b) => 
+    new Date(b.timestamp) - new Date(a.timestamp)
+  ));
+  
+  setOpenHistoryModal(true);
+};
   
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -543,96 +606,148 @@ const DailyCollection = () => {
         </div>
       )}
       
-      {/* Transaction History Modal */}
-      {openHistoryModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] flex flex-col">
-            <div className="bg-teal-600 text-white px-4 py-3 flex justify-between items-center rounded-t-lg sticky top-0">
-              <div>
-                <h3 className="text-lg font-medium">
-                  Transaction History
-                  {selectedAccount && ` - ${selectedAccount.name}`}
-                </h3>
-                <h4 className="text-xs font-medium">
-                  Account No:
-                  {selectedAccount && ` - ${selectedAccount.accountNumber}`}
-                </h4>
-                <p className="text-xs font-semibold">
-                  {selectedAccount && `Total transactions: ${selectedAccount.transactions.length}`}
-                </p>
-              </div>
-              <button onClick={() => setOpenHistoryModal(false)} className="text-white hover:text-gray-200">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="sticky top-14 z-10 bg-white border-b px-4 py-3 flex flex-wrap items-center gap-2">
-              <div className="flex-grow">
-                <label className="block text-gray-700 text-xs font-bold mb-1" htmlFor="filterDate">
-                  Filter by Date
-                </label>
-                <input
-                  id="filterDate"
-                  type="date"
-                  value={historyFilterDate || ''}
-                  onChange={(e) => setHistoryFilterDate(e.target.value)}
-                  className="w-full px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-              
-              {historyFilterDate && (
-                <button 
-                  className="mt-5 text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 flex items-center"
-                  onClick={() => setHistoryFilterDate(null)}
-                >
-                  <Filter className="w-3 h-3 mr-1" />
-                  Clear Filter
-                </button>
-              )}
-            </div>
-            
-            <div className="overflow-y-auto flex-grow p-4">
-              {filteredTransactions.length === 0 ? (
-                <div className="p-4 text-center">
-                  <p className="text-gray-500">
-                    No transactions found
-                    {historyFilterDate && ` for ${formatDate(historyFilterDate)}`}
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3 ">
-                  {filteredTransactions.map((transaction) => (
-                    <div 
-                      key={transaction.id}
-                      className="bg-gray-100 p-3 border border-gray-300 rounded-lg shadow-sm"
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="font-bold">
-                          ₹{transaction.amount.toFixed(2)}
-                        </span>
-                        <span className="text-xs text-gray-600">
-                          {formatDateTime(transaction.timestamp)}
-                        </span>
-                      </div>
-                      <hr className="my-1" />
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                        <p className="text-gray-700">
-                          <span className="font-semibold">Mode:</span> {transaction.payMode}
-                          {transaction.utrNo && ` (UTR: ${transaction.utrNo})`}
-                          {transaction.chequeNumber && ` (Cheque: ${transaction.chequeNumber})`}
-                        </p>
-                        <p className="text-gray-700">
-                          <span className="font-semibold">Note:</span> {transaction.note || '-'}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+     {/* Transaction History Modal */}
+{openHistoryModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] flex flex-col">
+      <div className="bg-teal-600 text-white px-4 py-3 flex justify-between items-center rounded-t-lg sticky top-0">
+        <div>
+          <h3 className="text-lg font-medium">
+            Transaction History
+            {selectedAccount && ` - ${selectedAccount.name}`}
+          </h3>
+          <h4 className="text-xs font-medium">
+            Account No:
+            {selectedAccount && ` - ${selectedAccount.accountNumber}`}
+          </h4>
+          <p className="text-xs font-semibold">
+            {selectedAccount && `Total transactions: ${selectedAccount.transactions.length}`}
+          </p>
+        </div>
+        <button onClick={() => setOpenHistoryModal(false)} className="text-white hover:text-gray-200">
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+      
+      {/* Enhanced Filter Section */}
+      <div className="sticky top-14 z-10 bg-white border-b px-4 py-3">
+        {/* Date Range Filters */}
+        <div className="flex flex-wrap items-end gap-3 mb-3">
+          <div className="flex-grow min-w-36">
+            <label className="block text-gray-700 text-xs font-bold mb-1" htmlFor="filterFromDate">
+              From Date
+            </label>
+            <input
+              id="filterFromDate"
+              type="date"
+              value={historyFilterFromDate || ''}
+              onChange={(e) => setHistoryFilterFromDate(e.target.value || null)}
+              className="w-full px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          
+          <div className="flex-grow min-w-36">
+            <label className="block text-gray-700 text-xs font-bold mb-1" htmlFor="filterToDate">
+              To Date
+            </label>
+            <input
+              id="filterToDate"
+              type="date"
+              value={historyFilterToDate || ''}
+              onChange={(e) => setHistoryFilterToDate(e.target.value || null)}
+              className="w-full px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          
+          <div className="flex-grow min-w-32">
+            <label className="block text-gray-700 text-xs font-bold mb-1" htmlFor="filterPayMode">
+              Payment Mode
+            </label>
+            <select
+              id="filterPayMode"
+              value={historyFilterPayMode}
+              onChange={(e) => setHistoryFilterPayMode(e.target.value)}
+              className="w-full px-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
+              <option value="">All Modes</option>
+              <option value="IMPS">IMPS</option>
+              <option value="Cash">Cash</option>
+              <option value="Cheque">Cheque</option>
+              {/* <option value="NEFT">NEFT</option>
+              <option value="RTGS">RTGS</option>
+              <option value="UPI">UPI</option> */}
+            </select>
           </div>
         </div>
-      )}
+        
+        {/* Clear Filters Button */}
+        {(historyFilterFromDate || historyFilterToDate || historyFilterPayMode) && (
+          <div className="flex justify-end">
+            <button 
+              className="text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 flex items-center"
+              onClick={() => {
+                setHistoryFilterFromDate(null);
+                setHistoryFilterToDate(null);
+                setHistoryFilterPayMode('');
+              }}
+            >
+              <Filter className="w-3 h-3 mr-1" />
+              Clear All Filters
+            </button>
+          </div>
+        )}
+      </div>
+      
+      {/* Transaction List */}
+      <div className="overflow-y-auto flex-grow p-4">
+        {filteredTransactions.length === 0 ? (
+          <div className="p-4 text-center">
+            <p className="text-gray-500">
+              No transactions found
+              {(historyFilterFromDate || historyFilterToDate || historyFilterPayMode) && (
+                <span>
+                  {' '}for the selected filters
+                  {historyFilterFromDate && ` (From: ${formatDate(historyFilterFromDate)})`}
+                  {historyFilterToDate && ` (To: ${formatDate(historyFilterToDate)})`}
+                  {historyFilterPayMode && ` (Mode: ${historyFilterPayMode})`}
+                </span>
+              )}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filteredTransactions.map((transaction) => (
+              <div 
+                key={transaction.id}
+                className="bg-gray-100 p-3 border border-gray-300 rounded-lg shadow-sm"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-bold">
+                    ₹{transaction.amount.toFixed(2)}
+                  </span>
+                  <span className="text-xs text-gray-600">
+                    {formatDateTime(transaction.timestamp)}
+                  </span>
+                </div>
+                <hr className="my-1" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                  <p className="text-gray-700">
+                    <span className="font-semibold">Mode:</span> {transaction.payMode}
+                    {transaction.utrNo && ` (UTR: ${transaction.utrNo})`}
+                    {transaction.chequeNumber && ` (Cheque: ${transaction.chequeNumber})`}
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-semibold">Note:</span> {transaction.note || '-'}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Toast notifications container */}
       <ToastContainer position="top-right" autoClose={3000} />
