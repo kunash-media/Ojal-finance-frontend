@@ -1,8 +1,13 @@
 import './AddCustomerForm.css'; // Import custom CSS for additional responsive styles
 import { useState } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const AddCustomerForm = () => {
+
+    const { user } = useAuth();
+
+    const getBranch = user?.branchName;
 
     // State for form data - keeping original structure
     const [formData, setFormData] = useState({
@@ -399,7 +404,7 @@ const AddCustomerForm = () => {
                                 placeholder="Branch Name"
                                 className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 onChange={handleChange}
-                                value={formData.branch}
+                                value={getBranch}
                                 required
                                 disabled={isSubmitting}
                             />
