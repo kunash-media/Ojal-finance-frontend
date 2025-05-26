@@ -269,7 +269,8 @@ const RecurringDeposit = () => {
               <th className="py-3 px-4 border-b text-left">Address</th>
               <th className="py-3 px-4 border-b text-left">Branch</th>
               <th className="py-3 px-4 border-b text-left">Date</th>
-              <th className="py-3 px-4 border-b text-center bg-slate-100 sticky right-0 z-20">Action</th>
+              <th className="py-3 px-4 border-b text-center bg-slate-100"
+                style={{position: 'sticky', right: 0, zIndex: 60}}>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -291,7 +292,8 @@ const RecurringDeposit = () => {
                   <td className="py-3 px-4 border-b">{user.address}</td>
                   <td className="py-3 px-4 border-b">{user.branch}</td>
                   <td className="py-3 px-4 border-b">{user.date}</td>
-                  <td className="py-2 px-4 border-b text-center bg-gray-50 sticky right-0 z-20">
+                  <td className="py-2 px-4 border-b text-center bg-gray-50"
+                     style={{position: 'sticky', right: 0}}>
                     <button
                       className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700 transition-colors"
                       onClick={() => handleAddRD(user)}

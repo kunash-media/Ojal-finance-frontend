@@ -98,6 +98,37 @@ const DUMMY_DATA = [
         timestamp: "2025-05-01T16:20:00"
       }
     ]
+  },
+  {
+    userId: "USR004",
+    accountNumber: "SA41391062",
+    createdAt: "2025-03-05T14:45:00",
+    accountStatus: "Active",
+    balance: 25000.00,
+    interestRate: 5.0,
+    name: "Robert Johnson",
+    transactions: [
+      {
+        id: 1,
+        amount: 10000.00,
+        payMode: "IMPS",
+        utrNo: "IMPS123456789012",
+        cash: null,
+        chequeNumber: null,
+        note: "Investment deposit",
+        timestamp: "2025-05-18T08:30:00"
+      },
+      {
+        id: 2,
+        amount: 15000.00,
+        payMode: "Cheque",
+        utrNo: null,
+        cash: null,
+        chequeNumber: "CHQ789012",
+        note: "Property rent",
+        timestamp: "2025-05-01T16:20:00"
+      }
+    ]
   }
 ];
 
@@ -341,7 +372,7 @@ const handleHistoryClick = (account) => {
   };
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 ">
       {/* Info section at the top */}
       <div className="bg-gradient-to-r from-teal-600 to-teal-400 rounded-lg shadow-lg mb-6 p-4 text-white">
         <h2 className="text-xl font-bold mb-2">
@@ -354,9 +385,9 @@ const handleHistoryClick = (account) => {
       </div>
       
       {/* Main table with account information */}
-      <div className="overflow-x-auto shadow-md rounded-lg">
+      <div className="overflow-x-auto h-[320px] shadow-md rounded-lg">
         <table className="min-w-full bg-white">
-          <thead className="bg-teal-600 text-white">
+          <thead className="bg-teal-600 text-white sticky top-0">
             <tr>
               <th className="py-3 px-4 text-left">User ID</th>
               <th className="py-3 px-4 text-left">Account Number</th>
@@ -364,7 +395,8 @@ const handleHistoryClick = (account) => {
               <th className="py-3 px-4 text-left">Account Status</th>
               <th className="py-3 px-4 text-left">Balance</th>
               <th className="py-3 px-4 text-left">Interest Rate</th>
-              <th className="py-3 px-4 text-left">Actions</th>
+              <th className="py-3 px-4 text-left"
+                style={{position: 'sticky', right: 0, zIndex: 60}}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -385,7 +417,8 @@ const handleHistoryClick = (account) => {
                 </td>
                 <td className="py-3 px-4">₹{account.balance.toFixed(2)}</td>
                 <td className="py-3 px-4">{account.interestRate}%</td>
-                <td className="py-3 px-4 space-x-2">
+                <td className="py-3 px-4 space-x-2"
+                  style={{position: 'sticky', right: 0}}>
                   <button 
                     className="bg-teal-600 m-2 hover:bg-teal-700 text-white px-5 py-1 rounded text-sm flex items-center"
                     onClick={() => handlePayClick(account)}

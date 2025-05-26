@@ -34,10 +34,6 @@ const AddCustomerForm = () => {
     const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState(false); // State to control loading spinner
 
-    // Input styles with rounded corners and subtle shadow on focus - KEEPING ORIGINAL
-    const inputClasses =
-        "border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition";
-
     /**
      * Show toast notification
      * @param {string} message - Toast message

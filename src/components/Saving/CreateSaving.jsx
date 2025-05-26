@@ -179,10 +179,10 @@ function CreateSaving() {
       </div>
 
       {/* Users table */}
-      <div className="overflow-x-auto overflow-y-auto h-[300px]">
+      <div className="overflow-x-auto h-[300px]">
         <table className="min-w-full bg-white border border-gray-300 rounded-md">
-          <thead className='sticky top-0 z-50'>
-            <tr className="bg-gray-100">
+          <thead className='bg-gray-100'>
+            <tr className="bg-gray-100 sticky top-0">
               <th className="py-3 px-10 border-b text-left">Id</th>
               <th className="py-3 px-10 border-b text-left">Name</th>
               <th className="py-3 px-10 border-b text-left">Mobile</th>
@@ -190,17 +190,18 @@ function CreateSaving() {
               <th className="py-3 px-10 border-b text-left">Email</th>
               <th className="py-3 px-10 border-b text-left">Branch</th>
               <th className="py-3 px-10 border-b text-left">Date</th>
-              <th className="py-3 px-10 border-b text-center bg-slate-100 sticky z-20 right-0">Action</th>
+              <th className="py-3 px-10 border-b text-center bg-gray-100"
+                style={{position: 'sticky', right: 0, zIndex: 60}}>Action</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="6" className="py-4 px-4 text-center">Loading...</td>
+                <td colSpan="8" className="py-4 px-4 text-center">Loading...</td>
               </tr>
             ) : filteredUsers.length === 0 ? (
               <tr>
-                <td colSpan="6" className="py-4 px-4 text-center">No users found</td>
+                <td colSpan="8" className="py-4 px-4 text-center">No users found</td>
               </tr>
             ) : (
               filteredUsers.map((user) => (
@@ -212,7 +213,8 @@ function CreateSaving() {
                   <td className="py-3 px-4 border-b">{user.email}</td>
                   <td className="py-3 px-4 border-b">{user.branch}</td>
                   <td className="py-3 px-4 border-b">{user.date}</td>
-                  <td className="py-2 px-4 border-b text-center bg-gray-50 sticky right-0 z-20">
+                  <td className="py-2 px-4 border-b text-center bg-white"
+                      style={{position: 'sticky', right: 0}}>
                     <button
                       className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700 transition-colors"
                       onClick={() => handleAddSaving(user.id)}
