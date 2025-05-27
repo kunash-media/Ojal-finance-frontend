@@ -130,7 +130,7 @@ function SignUp() {
             }
 
             toast.success('Account created successfully!');
-            setTimeout(() => navigate('/login'), 2000);
+            setTimeout(() => navigate('/login'), 4000);
         } catch (error) {
             console.error('Signup error:', error);
             toast.error('Failed to connect to server.');

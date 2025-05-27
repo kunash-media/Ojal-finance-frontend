@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { UserProvider } from "./context/UserContext.jsx";
 import FinanceAdminLayout from "./components/FinanceAdminPanel";
 import Dashboard from './components/DashboardAdmin/Dashboard';
 import CreateSaving from './components/Saving/CreateSaving';
@@ -15,24 +16,25 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-      <Routes>
-        <Route path="/" element={<FinanceAdminLayout />}>
+         <UserProvider>
+          <Routes>
+            <Route path="/" element={<FinanceAdminLayout />}>
+              {/*----Nested routes that will render inside the FinanceAdminLayout ----*/}
+                <Route index element={<Dashboard />} />
+                <Route path="add-customer" element={<AddCustomerForm/>} />
+                <Route path="create-saving" element={<CreateSaving />} />
+                <Route path="create-rd" element={<RecurringDeposit/>} />
+                <Route path="create-fd" element={<FixedDeposit />} />
+                <Route path="apply-loan" element={<PagePlaceholder title="Apply for Loan" />} />
+                <Route path="reports" element={<PagePlaceholder title="Reports" />} />
+                <Route path = "daily-collection" element={<DailyCollection/>}/>
+            </Route>
 
-          {/*----Nested routes that will render inside the FinanceAdminLayout ----*/}
-            <Route index element={<Dashboard />} />
-            <Route path="add-customer" element={<AddCustomerForm/>} />
-            <Route path="create-saving" element={<CreateSaving />} />
-            <Route path="create-rd" element={<RecurringDeposit/>} />
-            <Route path="create-fd" element={<FixedDeposit />} />
-            <Route path="apply-loan" element={<PagePlaceholder title="Apply for Loan" />} />
-            <Route path="reports" element={<PagePlaceholder title="Reports" />} />
-            <Route path = "daily-collection" element={<DailyCollection/>}/>
-        </Route>
-
-         <Route path = "/login" element={<LoginForm/>}/>
-         <Route path = "/signup" element={<SignUp/>}/>
-         
-      </Routes> 
+            <Route path = "/login" element={<LoginForm/>}/>
+            <Route path = "/signup" element={<SignUp/>}/>
+            
+          </Routes> 
+        </UserProvider>
       </AuthProvider>     
     </Router>
   );
