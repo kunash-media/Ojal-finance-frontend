@@ -7,7 +7,7 @@ const AddCustomerForm = () => {
 
     const { user } = useAuth();
 
-    const getBranch = user?.branchName;
+    const getBranch = user?.branchName || "NA";
 
     // State for form data - keeping original structure
     const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ const AddCustomerForm = () => {
         address: '',
         gender: '',
         pincode: '',
-        branch: '',
+        branch: getBranch,
         documents: {
             aadharCard: null,    // Match backend field name (was aadhaar)
             panCard: null,       // Match backend field name (was pan)

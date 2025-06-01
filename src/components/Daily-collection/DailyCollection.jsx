@@ -8,12 +8,12 @@ import 'react-toastify/dist/ReactToastify.css';
 const DUMMY_DATA = [
   {
     userId: "USR001",
+    name:"Sunder Pichai",
     accountNumber: "SA21391062",
     createdAt: "2025-01-15T10:30:00",
     accountStatus: "Active",
     balance: 15000.00,
     interestRate: 4.5,
-    name: "John Doe",
     transactions: [
       {
         id: 1,
@@ -49,12 +49,12 @@ const DUMMY_DATA = [
   },
   {
     userId: "USR002",
+    name:"Sam Altman",
     accountNumber: "SA61391062",
     createdAt: "2025-02-20T09:15:00",
     accountStatus: "Inactive",
     balance: 7500.00,
     interestRate: 3.5,
-    name: "Jane Smith",
     transactions: [
       {
         id: 1,
@@ -70,12 +70,12 @@ const DUMMY_DATA = [
   },
   {
     userId: "USR003",
+    name:"Ajay Devgan",
     accountNumber: "SA71391062",
     createdAt: "2025-03-05T14:45:00",
     accountStatus: "Active",
     balance: 25000.00,
     interestRate: 5.0,
-    name: "Robert Johnson",
     transactions: [
       {
         id: 1,
@@ -101,12 +101,12 @@ const DUMMY_DATA = [
   },
   {
     userId: "USR004",
+    name:"Sharukh Khan",
     accountNumber: "SA41391062",
     createdAt: "2025-03-05T14:45:00",
     accountStatus: "Active",
     balance: 25000.00,
     interestRate: 5.0,
-    name: "Robert Johnson",
     transactions: [
       {
         id: 1,
@@ -452,7 +452,7 @@ const DailyCollection = () => {
         >
           <option value="name">Search by Name</option>
           <option value="accountNumber">Search by Account Number</option>
-          <option value="userId">Search by User ID</option>
+          {/* <option value="userId">Search by User ID</option> */}
         </select>
         </div>
       </div>
@@ -463,6 +463,7 @@ const DailyCollection = () => {
           <thead className="bg-teal-600 text-white sticky top-0 z-20">
             <tr className="bg-teal-600">
               <th className="py-3 px-4 text-left">User ID</th>
+              <th className="py-3 px-4 text-left">Name</th>
               <th className="py-3 px-4 text-left">Account Number</th>
               <th className="py-3 px-4 text-left">Created At</th>
               <th className="py-3 px-4 text-left">Account Status</th>
@@ -478,16 +479,17 @@ const DailyCollection = () => {
                 key={account.userId}
                 className={`border-b ${account.accountStatus === 'Active' ? 'bg-white' : 'bg-gray-50'}`}
               >
-                <td className="py-3 px-4">{account.userId}</td>
-                <td className="py-3 px-4">{account.accountNumber}</td>
-                <td className="py-3 px-4">{formatDateTime(account.createdAt)}</td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-5">{account.userId}</td>
+                <td className="py-3 px-5">{account.name}</td>
+                <td className="py-3 px-5">{account.accountNumber}</td>
+                <td className="py-3 px-5">{formatDateTime(account.createdAt)}</td>
+                <td className="py-3 px-5">
                   <span className={`px-2 py-1 rounded-full text-xs ${account.accountStatus === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
                     {account.accountStatus}
                   </span>
                 </td>
-                <td className="py-3 px-4">₹{account.balance.toFixed(2)}</td>
+                <td className="py-3 px-5">₹{account.balance.toFixed(2)}</td>
                 <td className="py-3 px-4">{account.interestRate}%</td>
                 <td className="py-3 px-4 space-x-2 bg-white"
                   style={{ position: 'sticky', right: 0 }}>
