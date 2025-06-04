@@ -1,5 +1,5 @@
 import './AddCustomerForm.css'; // Import custom CSS for additional responsive styles
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
 import { useAuth } from '../../context/AuthContext.jsx';
 
@@ -21,7 +21,7 @@ const AddCustomerForm = () => {
         address: '',
         gender: '',
         pincode: '',
-        branch: getBranch,
+        branch: '',
         documents: {
             aadharCard: null,    // Match backend field name (was aadhaar)
             panCard: null,       // Match backend field name (was pan)
@@ -38,6 +38,45 @@ const AddCustomerForm = () => {
     const [toastType, setToastType] = useState(''); // 'success' or 'error'
     const [showToast, setShowToast] = useState(false);
     const [loading, setLoading] = useState(false); // State to control loading spinner
+
+    // Branch list state
+    const [branchList, setBranchList] = useState([]);
+    const [branchLoading, setBranchLoading] = useState(false);
+
+    /**
+     * Fetch branch list from backend API
+     */
+    const fetchBranchList = async () => {
+        setBranchLoading(true);
+        try {
+            const response = await fetch('http://localhost:8080/api/admins/get-branch-list', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const branches = await response.json();
+                setBranchList(branches);
+            } else {
+                console.error('Failed to fetch branch list');
+                showToastNotification('Failed to load branch list. Please try again.', 'error');
+            }
+        } catch (error) {
+            console.error('Error fetching branch list:', error);
+            showToastNotification('Network error while loading branches. Please check your connection.', 'error');
+        } finally {
+            setBranchLoading(false);
+        }
+    };
+
+    /**
+     * useEffect to fetch branch list on component mount
+     */
+    useEffect(() => {
+        fetchBranchList();
+    }, []);
 
     /**
      * Show toast notification
@@ -394,20 +433,28 @@ const AddCustomerForm = () => {
                                 disabled={isSubmitting}
                             />
                         </label>
+                        {/* Branch Dropdown - REPLACED INPUT WITH SELECT */}
                         <label className="flex flex-col">
                             <span className="mb-2 font-semibold text-gray-700">
                                 Branch Name <span className="text-red-600">*</span>
                             </span>
-                            <input
-                                type="text"
+                            <select
                                 name="branch"
-                                placeholder="Branch Name"
-                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
+                                value={formData.branch}
                                 onChange={handleChange}
-                                value={getBranch}
+                                className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                                 required
-                                disabled={isSubmitting}
-                            />
+                                disabled={isSubmitting || branchLoading}
+                            >
+                                <option value="" disabled hidden>
+                                    {branchLoading ? "Loading branches..." : "Select Branch"}
+                                </option>
+                                {branchList.map((branch, index) => (
+                                    <option key={index} value={branch}>
+                                        {branch}
+                                    </option>
+                                ))}
+                            </select>
                         </label>
                         {/* Address - KEEPING ORIGINAL TAILWIND */}
                         <label className="flex flex-col">

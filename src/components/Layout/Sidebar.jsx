@@ -1,7 +1,7 @@
 import { 
   LayoutDashboard, HandCoins, CreditCard, Building, 
   FileText, Users, BarChart, ChevronLeft, ChevronRight,
-  LogOut
+  LogOut, FileUser
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -22,6 +22,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
     { name: 'Create RD', icon: <CreditCard size={20} />, path: '/create-rd' },
     { name: 'Create FD', icon: <Building size={20} />, path: '/create-fd' },
     { name: 'Apply for Loan', icon: <FileText size={20} />, path: '/apply-loan' },
+    { name: 'All Customers', icon: <FileUser size={20} />, path: '/all-customers' },
     { name: 'Reports', icon: <BarChart size={20} />, path: '/reports' },
   ];
   

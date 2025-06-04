@@ -11,6 +11,7 @@ import SignUp from "./components/Login-SignUp/SignUp";
 import DailyCollection from "./components/Daily-collection/DailyCollection";
 import RecurringDeposit from "./components/Recurring-deposit/RecurringDeposit.jsx";
 import FixedDeposit from "./components/Fixed-Deposit/FixedDeposit.jsx";
+import UserList from "./components/Users-list/UserList.jsx";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                 <Route path="apply-loan" element={<PagePlaceholder title="Apply for Loan" />} />
                 <Route path="reports" element={<PagePlaceholder title="Reports" />} />
                 <Route path = "daily-collection" element={<DailyCollection/>}/>
+                <Route path = "all-customers" element={<UserList/>}/>
             </Route>
 
             <Route path = "/login" element={<LoginForm/>}/>

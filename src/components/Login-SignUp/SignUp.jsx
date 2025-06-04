@@ -175,6 +175,7 @@ function SignUp() {
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
+                            placeholder = "Create New Username"
                         />
                         {errors.username && <p className="text-sm text-red-500 mt-1">{errors.username}</p>}
                     </div>
@@ -190,6 +191,7 @@ function SignUp() {
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
+                            placeholder = "Enter Your Valid Email"
                         />
                         {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
                     </div>
@@ -225,6 +227,7 @@ function SignUp() {
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
+                            placeholder = "Enter Your Mobile Number"
                         />
                         {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone}</p>}
                     </div>
@@ -239,7 +242,8 @@ function SignUp() {
                             value={formData.altPhone}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
-                            placeholder="Optional"
+                            placeholder="Optional Mobile Number"
+    
                         />
                         {errors.altPhone && <p className="text-sm text-red-500 mt-1">{errors.altPhone}</p>}
                     </div>
@@ -255,6 +259,7 @@ function SignUp() {
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
+                              placeholder = "Enter Branch Name"
                         />
                     </div>
 
@@ -269,6 +274,7 @@ function SignUp() {
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
+                            placeholder = "Create New Password"
                         />
                         <span
                             className="absolute right-3 top-10 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-[#219C90]"
@@ -290,6 +296,7 @@ function SignUp() {
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-teal-600 border-teal-600"
                             required
+                              placeholder = "Repeat Your Password"
                         />
                         <span
                             className="absolute right-3 top-10 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-[#219C90]"

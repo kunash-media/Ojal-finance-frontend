@@ -26,11 +26,22 @@ export const UserProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        'http://localhost:8080/api/users/get-all-users',
-        { params: { role } }
-      );
-      console.log("user data fetched :",response.data);
+      let response;
+      
+      if (role === 'SUPER_ADMIN') {
+        // Call the existing API for SUPER_ADMIN
+        response = await axios.get(
+          'http://localhost:8080/api/users/get-all-users',
+          { params: { role } }
+        );
+      } else {
+        // Call the branch-specific API for other roles
+        response = await axios.get(
+          `http://localhost:8080/api/users/get-all-branch?branchName=${authUser?.branchName || ''}`
+        );
+      }
+      
+      console.log("user data fetched :", response.data);
       setUsers(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch users');

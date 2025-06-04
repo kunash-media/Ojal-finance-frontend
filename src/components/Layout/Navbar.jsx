@@ -71,7 +71,7 @@ function Navbar() {
           <div className="flex items-center space-x-3">
             <div className="hidden md:block profile-details">
               <div className="font-medium">Name : {userName}</div>
-              <div className="text-sm text-gray-500">Branch Name : <span className='text-gray-700 font-medium'>{branchName}</span></div>
+              <div className="text-sm text-gray-500">Branch : <span className='text-gray-700 font-medium'>{branchName}</span></div>
               <div className="text-sm text-gray-500">Role :  <span className='text-teal-700 font-bold'>{userRole}</span></div>
             </div>
          
