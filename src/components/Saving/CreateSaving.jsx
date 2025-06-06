@@ -691,13 +691,13 @@ function CreateSaving() {
       {/* Debug information - Remove in production */}
       {process.env.NODE_ENV === 'development' && (
         <div className="mb-4 p-2 border border-gray-200 bg-gray-50 rounded text-sm">
-          <p><strong>Debug Info:</strong></p>
-          <p>Branch: <span className='text-teal-600 font-semibold'>
+          
+          <p className='font-bold'>Branch: <span className='text-teal-600 font-semibold'>
               {user?.role === 'SUPER_ADMIN' ? 'All Branches' : adminBranch}</span>
           </p>
-          <p>Total Saving-A/C : {Array.from(userAccountsMap.values()).filter(info => info.hasAccount).length}</p>
-          <p>Total Customers: {filteredUsers.length}</p>
-          <p>Accounts loading: {accountsLoading ? 'Yes' : 'No'}</p>
+          <p className='font-semibold'>Total Saving-A/C : {Array.from(userAccountsMap.values()).filter(info => info.hasAccount).length}</p>
+          <p className='font-semibold'>Total Customers: {filteredUsers.length}</p>
+          {/* <p>Accounts loading: {accountsLoading ? 'Yes' : 'No'}</p> */}
         </div>
       )}
 

@@ -112,12 +112,12 @@ const UserList = () => {
     }
     return (
         <div className="user-list-container border border-gray-200 rounded-md" style={{
-            background: 'linear-gradient(140deg, #ffffff 0%, #E1F7F5 40%, #ffffff 100%)',
+            background: 'linear-gradient(140deg, #ffffff 0%, #E1F7F5 35%, #ffffff 130%)',
         }}>
             {/* Header Section */}
-            <div className="bg-white rounded-lg shadow-sm p-3 mb-4 border border-gray-200">
+            <div className="bg-white rounded-lg shadow-sm p-3 mb-4 border border-gray-300">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                    <h1 className="text-xl font-bold text-gray-800">All Customers</h1>
+                    <h1 className="text-xl font-bold text-gray-800">All Customers ({users?.length})</h1>
 
                     {/* Search and Filter Controls */}
                     <div className="flex flex-col sm:flex-row gap-4 lg:w-auto w-full search-filter-container">
@@ -156,22 +156,22 @@ const UserList = () => {
 
             {/* Users Table */}
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div className="overflow-x-auto h-[300px]">
+                <div className="overflow-x-auto h-[320px]">
                     <table className="w-full">
-                        <thead className="bg-gray-50 sticky top-0">
+                        <thead className="bg-gray-200 sticky top-0">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Email</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Alt Mobile</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">DOB</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Gender</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden xl:table-cell">Address</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Pincode</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white"
-                                    style={{ position: 'sticky', right: '120px', zIndex: 60 }}>Branch</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white"
-                                    style={{ position: 'sticky', right: '0', zIndex: 60 }}> Action </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Name</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden md:table-cell">Email</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Mobile</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden lg:table-cell">Alt Mobile</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden xl:table-cell">DOB</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden lg:table-cell">Gender</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden xl:table-cell">Address</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden lg:table-cell">Pincode</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider bg-gray-200"
+                                    style={{ position: 'sticky', right: '120px', zIndex: 60, willChange: 'transform' }}>Branch</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider bg-gray-200"
+                                    style={{ position: 'sticky', right: '0', zIndex: 60, willChange: 'transform' }}> Action </th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">

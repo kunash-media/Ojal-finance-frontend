@@ -5,7 +5,7 @@ function StatCards() {
   // Map icon name to component
   const iconMap = {
     Users: <Users size={24} />,
-    PiggyBank: <HandCoins size={24} />,
+    HandCoins: <HandCoins size={24} />,
     Building: <Building size={24} />,
     FileText: <FileText size={24} />
   };

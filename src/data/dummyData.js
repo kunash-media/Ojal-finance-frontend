@@ -46,8 +46,8 @@ export const customersData = [
 ];
 
 export const statCardsData = [
-  { title: 'Total Customers', value: '5,320', icon: 'Users', color: colors.airForceBlue },
-  { title: 'Total Savings', value: '$1.2M', icon: 'PiggyBank', color: colors.caramel },
-  { title: 'Fixed Deposits', value: '$850K', icon: 'Building', color: colors.amaranth },
-  { title: 'Active Loans', value: '$2.5M', icon: 'FileText', color: colors.airForceBlue },
+  { title: 'Total Customers', value: '380', icon: 'Users', color: colors.airForceBlue },
+  { title: 'Total Savings', value: '160', icon: 'HandCoins', color: colors.caramel },
+  { title: 'Fixed Deposits', value: '80', icon: 'Building', color: colors.amaranth },
+  { title: 'Active Loans', value: '45', icon: 'FileText', color: colors.airForceBlue },
 ];
